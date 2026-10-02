@@ -225,6 +225,26 @@ class Plugin(BasePlugin):
 
         vbox.addWidget(self._verdict_view(dialog), 1)
         vbox.addLayout(Buttons(CloseButton(dialog)))
+
+        if os.environ.get("TRUST_VENDOR_DUMP_UI") == "1":
+            # Text-first proof for headless runs (and for anyone who cannot read
+            # the screenshot): log what the dialog actually rendered.
+            view = vbox.itemAt(0).widget()
+            verdict = vbox.itemAt(vbox.count() - 2).widget()
+
+            def _dump():
+                self.logger.info(
+                    f"trust_vendor: dialog title={dialog.windowTitle()!r} "
+                    f"shop_url={url!r} first_widget={type(view).__name__}"
+                )
+                try:
+                    self.logger.info("trust_vendor: verdict panel text:\n"
+                                     + verdict.toPlainText()[:1200])
+                except Exception as e:
+                    self.logger.info(f"trust_vendor: verdict dump failed {e!r}")
+            from PyQt6.QtCore import QTimer
+            QTimer.singleShot(2500, _dump)
+
         dialog.exec()
 
     def _show_panel(self, window: QWidget) -> None:
