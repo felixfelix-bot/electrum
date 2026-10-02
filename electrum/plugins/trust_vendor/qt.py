@@ -45,20 +45,36 @@ if TYPE_CHECKING:
 DEFAULT_SET_FILE = os.path.expanduser("~/.electrum/trust_vendor/trust_set.json")
 DEFAULT_SET_ID = "burger-vendors-berlin"
 
+# Opt-in embedded shop view. Qt refuses to import QtWebEngineWidgets once a
+# QCoreApplication exists ("must be imported ... before a QCoreApplication
+# instance is created"), and Electrum creates its app before our dialog runs —
+# so the ONLY place the import can succeed is here, while the plugin module is
+# loaded. That is also why 'chrome inside Electrum' silently degrades to
+# 'open in your browser': measured 2026-10-02, the ImportError is swallowed by
+# the fallback and the dialog then renders a QLabel nobody can explain.
+# Gated on an env var: a wallet should not pull a browser engine unless asked.
+_EMBED_SHOP = os.environ.get("TRUST_VENDOR_EMBED_SHOP") == "1"
+_WEBENGINE_VIEW = None
+_WEBENGINE_ERROR = None
+if _EMBED_SHOP:
+    try:
+        from PyQt6.QtWebEngineWidgets import QWebEngineView as _WEBENGINE_VIEW  # type: ignore
+    except Exception as _e:  # pragma: no cover - depends on the Qt build
+        _WEBENGINE_ERROR = f"{type(_e).__name__}: {_e}"
+
 
 def _maybe_webview(parent: QWidget, url: str) -> Optional[QWidget]:
     """Return a QtWebEngine view if it is installed, else None.
 
     PyQt6-WebEngine is not an Electrum dependency and shipping a browser engine
-    inside a wallet is a real attack surface, so this is strictly best-effort:
-    the caller falls back to opening the system browser.
+    inside a wallet is a real attack surface, so this is strictly best-effort
+    (and opt-in, see _EMBED_SHOP): the caller falls back to opening the system
+    browser.
     """
-    try:
-        from PyQt6.QtCore import QUrl
-        from PyQt6.QtWebEngineWidgets import QWebEngineView  # type: ignore
-    except Exception:
+    if _WEBENGINE_VIEW is None:
         return None
-    view = QWebEngineView(parent)
+    view = _WEBENGINE_VIEW(parent)
+    from PyQt6.QtCore import QUrl
     view.setUrl(QUrl(url))
     return view
 
@@ -210,6 +226,10 @@ class Plugin(BasePlugin):
             else:
                 from PyQt6.QtCore import QUrl
                 from PyQt6.QtGui import QDesktopServices
+                self.logger.info(
+                    "trust_vendor: no embedded shop view — falling back to the system "
+                    f"browser. reason: {_WEBENGINE_ERROR or 'PyQt6-WebEngine not installed'}"
+                )
                 vbox.addWidget(QLabel(_(
                     "PyQt6-WebEngine is not installed, so the shop opens in your system "
                     "browser instead of inside Electrum."
