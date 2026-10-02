@@ -162,6 +162,7 @@ class Plugin(BasePlugin):
     def init_menubar(self, window):
         menu = window.wallet_menu.addMenu(_("Trusted Vendors"))
         menu.addAction(_("Vet a vendor…"), lambda: self._show_panel(window))
+        self.logger.info("trust_vendor: menu installed ('Trusted Vendors' in the wallet menu)")
 
     @hook
     def create_send_tab(self, grid: QGridLayout):
@@ -172,6 +173,7 @@ class Plugin(BasePlugin):
         ))
         button.clicked.connect(lambda: self._open_shop(button.window()))
         grid.addWidget(button, grid.rowCount(), 0, 1, 2)
+        self.logger.info("trust_vendor: Send-tab shop button installed")
 
     def set_pending_order(self, order: OrderContext, ring, signature: LSAGSignature) -> None:
         """Called by the shop flow once the buyer has chosen an order."""
