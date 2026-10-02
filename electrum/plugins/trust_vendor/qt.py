@@ -224,7 +224,7 @@ class Plugin(BasePlugin):
             )))
 
         vbox.addWidget(self._verdict_view(dialog), 1)
-        vbox.addLayout(Buttons(dialog, CloseButton))
+        vbox.addLayout(Buttons(CloseButton(dialog)))
         dialog.exec()
 
     def _show_panel(self, window: QWidget) -> None:
@@ -232,7 +232,7 @@ class Plugin(BasePlugin):
         dialog.setMinimumSize(700, 480)
         vbox = QVBoxLayout(dialog)
         vbox.addWidget(self._verdict_view(dialog), 1)
-        vbox.addLayout(Buttons(dialog, CloseButton))
+        vbox.addLayout(Buttons(CloseButton(dialog)))
         dialog.exec()
 
     def _verdict_view(self, parent: QWidget) -> QTextBrowser:
