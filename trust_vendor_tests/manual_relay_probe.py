@@ -24,7 +24,10 @@ from trust_vendor.trustset_relay import (                            # noqa: E40
 
 def main() -> int:
     set_id = sys.argv[1] if len(sys.argv) > 1 else "burger-vendors-berlin"
-    fetch = make_relay_fetch(timeout=12)
+    # 25s, not 12s: damus/primal answer this REQ but the loop only leaves on the
+    # deadline (EOSE is not surfaced), so a short window returns None while the
+    # event is in fact available. Verified 2026-10-02: 12s -> None, 20s -> event.
+    fetch = make_relay_fetch(timeout=25)
     event = fetch(set_id)
     if event is None:
         print(f"relay fetch returned None for {set_id!r} "

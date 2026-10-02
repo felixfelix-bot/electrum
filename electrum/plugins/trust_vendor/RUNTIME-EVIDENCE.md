@@ -57,6 +57,12 @@ parsed: set_id=burger-vendors-berlin members=8 published_at=2026-10-02T07:41:36Z
 
 Reproduce with `trust_vendor_tests/manual_relay_probe.py` (needs the runtime venv).
 
+Timing caveat (2026-10-02): the fetch returns the event but only when the window
+elapses — `EOSE` is not surfaced through `electrum_aionostr`'s queue, so the loop
+runs until the deadline. A 12 s window returned `None` on relays that answer;
+20–25 s returns the event. `wss://nos.lol` never answered (left in the list as a
+best-effort extra). The probe's default is now 25 s.
+
 API note worth keeping: in `electrum_aionostr` 0.1.0 `Manager.subscribe` is a
 **coroutine** and must be awaited — the first version of `relay.py` silently
 returned None until that was fixed.
