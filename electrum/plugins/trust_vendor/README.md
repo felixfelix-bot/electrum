@@ -13,11 +13,11 @@ Built for the Berlin hackathon spike (`ring-signatures-web-of-trust`), as an
 
 | Component | Status |
 |---|---|
-| `curve.py`, `lsag.py`, `trustset.py`, `verify.py`, `gate.py` | **20 unit tests green** + headless demo (`demo.py`) asserting every attack beat |
+| `curve.py`, `lsag.py`, `trustset.py`, `verify.py`, `gate.py`, `hooks.py`, `trustset_relay.py` | **52 unit tests green** + headless demo (`demo.py`) asserting every attack beat |
 | TS→Python port parity | `lsag.py` / `trustset.ts` ported byte-for-byte from the fleet's tested TypeScript (`mcp-cashu-exchange/packages/plugin-trust-ring/src/`, 18 tests) — same hash-to-curve quirk, same hash-to-scalar length-prefixing, same content-hash encoding |
-| `qt.py` (menu, send-tab button, webview, verdict panel) | **written, reviewed, NOT executed** — no PyQt6 in the build environment, and `electrum_ecc` does not import there |
-| NIP-51 relay fetch of the trust set (P3) | **not implemented** — `qt.py` loads a local JSON fixture |
-| Money-path hook wiring (P5) | **not implemented** — `make_unsigned_transaction` gate is the next step |
+| `qt.py` | **loads inside real Electrum 4.8** — `loaded plugin 'trust_vendor'` (Qt 6.11, Xvfb); the on-screen menu still needs a visual pass (the GUI sat on the wallet wizard). See `RUNTIME-EVIDENCE.md` |
+| P3 relay fetch of the trust set | **implemented and demonstrated live** — a kind-30000 set published to `relay.damus.io` + `relay.primal.net`, fetched back and parsed (8 members) |
+| P5 money-path gate | **implemented** on `abort_send` (blocks before the tx is built) and `tc_sign_wrapper`. NOT on `make_unsigned_transaction` — `run_hook` swallows exceptions there, so it is inspect-only |
 
 Run the verified parts (no Electrum, no Qt, no network):
 

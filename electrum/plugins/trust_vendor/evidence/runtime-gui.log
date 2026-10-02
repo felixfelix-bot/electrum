@@ -1,0 +1,33 @@
+  1.04 | I | simple_config.SimpleConfig | electrum directory /home/c03rad0r/electrum-tv-demo (chain=mainnet)
+  1.04 | I | simple_config.SimpleConfig | electrum directory /home/c03rad0r/electrum-tv-demo (chain=mainnet)
+  1.04 | D | util.profiler | Plugins.__init__ 0.0051 sec
+  1.17 | I | simple_config.SimpleConfig | electrum directory /home/c03rad0r/electrum-tv-demo (chain=mainnet)
+  1.23 | I | __main__ | get_default_language: detected default as lang='en_UK'
+  1.23 | I | i18n | setting language to 'en_UK'
+  1.26 | I | logging | Electrum version: 4.8.0 - https://electrum.org - https://github.com/spesmilo/electrum
+  1.27 | I | logging | Python version: 3.11.15 (main, Mar  3 2026, 14:59:53) [Clang 21.1.4 ]. On platform: Linux-7.0.0-34-generic-x86_64-with-glibc2.43
+  1.27 | I | logging | Logging to file: None
+  1.27 | I | logging | Log filters: verbosity '*'
+  1.27 | I | daemon | failed to connect to JSON-RPC server Cannot connect to unix socket /home/c03rad0r/electrum-tv-demo/daemon_rpc_socket ssl:default [Connection refused]
+  1.27 | I | exchange_rate.FxThread | using exchange CoinGecko
+  1.28 | D | util.profiler | Daemon.__init__ 0.0027 sec
+  1.28 | I | simple_config.SimpleConfig | electrum directory /home/c03rad0r/electrum-tv-demo (chain=mainnet)
+  1.28 | I | daemon.Daemon | starting taskgroup.
+  1.28 | I | daemon.CommandsServer | now running and listening. socktype=unix, addr=/home/c03rad0r/electrum-tv-demo/daemon_rpc_socket. only_minimal_jsonrpc=True
+  1.28 | I | plugin.Plugins | registering hardware bitbox02: ['hardware', 'bitbox02', 'BitBox02']
+  1.28 | I | plugin.Plugins | registering hardware coldcard: ['hardware', 'coldcard', 'Coldcard Wallet']
+  1.28 | I | plugin.Plugins | registering hardware digitalbitbox: ['hardware', 'digitalbitbox', 'Digital Bitbox wallet']
+  1.28 | I | plugin.Plugins | registering hardware jade: ['hardware', 'jade', 'Jade wallet']
+  1.28 | I | plugin.Plugins | registering hardware keepkey: ['hardware', 'keepkey', 'KeepKey wallet']
+  1.28 | I | plugin.Plugins | registering hardware ledger: ['hardware', 'ledger', 'Ledger wallet']
+  1.29 | I | plugin.Plugins | registering hardware safe_t: ['hardware', 'safe_t', 'Safe-T mini wallet']
+  1.29 | I | plugin.Plugins | registering hardware trezor: ['hardware', 'trezor', 'Trezor wallet']
+  1.29 | I | plugin.Plugins | registering wallet type ('2fa', 'trustedcoin')
+  1.35 | D | gui.qt | successfully preloaded optional dependency: PyQt6.QtMultimedia
+  1.52 | I | plugin.Plugins | loaded plugin 'trust_vendor'. (from thread: 'GUI')
+  1.52 | D | util.profiler | Plugins.__init__ 0.2389 sec
+  1.52 | I | daemon.Daemon | launching GUI: qt
+  1.52 | I | gui.qt.ElectrumGui | Qt GUI starting up... Qt=6.11.0, PyQt=6.11.0
+  1.58 | D | util.profiler | ElectrumGui.__init__ 0.0593 sec
+  1.70 | D | wizard | load_next_component: <class 'electrum.gui.qt.wizard.terms_of_use.WCTermsOfUseScreen'>
+  1.75 | D | wizard | view "terms_of_use" last: True
