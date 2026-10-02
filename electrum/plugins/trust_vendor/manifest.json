@@ -1,0 +1,9 @@
+{
+    "name": "trust_vendor",
+    "fullname": "Trusted Vendors",
+    "description": "Vet a vendor with an LSAG ring-signature proof against a pinned trust set you own, and gate the payment on it.",
+    "author": "Felix (ring-signatures-web-of-trust)",
+    "version": "0.1.0",
+    "requires": [["coincurve", "https://github.com/ofek/coincurve"]],
+    "available_for": ["qt"]
+}
