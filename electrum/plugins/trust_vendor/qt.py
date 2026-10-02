@@ -110,6 +110,17 @@ class Plugin(BasePlugin):
     @hook
     def load_wallet(self, wallet, window):
         self._gate = self._load_gate()
+        # Screenshot/demo aid: with TRUST_VENDOR_AUTO_OPEN=1 the shop dialog opens
+        # on its own once the wallet window exists. A headless Xvfb run can then
+        # photograph the REAL dialog instead of a menu item that needs a click —
+        # and it exercises the dialog code path, which no unit test can reach.
+        if os.environ.get("TRUST_VENDOR_AUTO_OPEN") == "1":
+            try:
+                from PyQt6.QtCore import QTimer
+                QTimer.singleShot(1500, lambda: self._open_shop(window))
+                self.logger.info("trust_vendor: TRUST_VENDOR_AUTO_OPEN=1 — opening the shop dialog")
+            except Exception as e:
+                self.logger.info(f"trust_vendor: auto-open skipped ({e!r})")
 
     @hook
     def abort_send(self, send_tab) -> bool:
